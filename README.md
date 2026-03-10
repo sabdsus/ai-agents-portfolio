@@ -10,10 +10,10 @@ Automatically pulls the latest AI regulation news, analyzes each article
 and classifies it by source legitimacy, regulatory stance, and sentiment.
 
 ## Workflow Diagram
-![Workflow](osintworkflow.png)
+![Workflow](osint-workflow.png)
 
 ## Sample Output
-![Output](osintoutput.png)
+![Output](osint-output.png)
 
 ## Tools Used
 - n8n (workflow automation)
