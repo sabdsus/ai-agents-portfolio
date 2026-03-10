@@ -29,4 +29,4 @@ and classifies it by source legitimacy, regulatory stance, and sentiment.
 - Summary
 
 ## Import This Workflow
-Download `OSINT_News_Intelligence_Agent.json` and import it directly into n8n to use this workflow yourself.
+[Download the n8n workflow JSON](OSINT_News_Intelligence_Agent.json)
