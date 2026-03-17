@@ -31,6 +31,10 @@ performance on FINRA regulatory classification tasks.
 - Napkin.ai (architecture visualization)
 - Google Sheets (output storage)
 
+## Import This Workflow
+Download [FINRA-Compliance-Evaluation-Agent.json](FINRA-Agent/FINRA-Compliance-Evaluation-Agent.json) 
+and import directly into n8n to use this workflow yourself.
+
 ## FINRA Rules Applied
 - Rule 2010 — Standards of Commercial Honor
 - Rule 2111 — Suitability  
