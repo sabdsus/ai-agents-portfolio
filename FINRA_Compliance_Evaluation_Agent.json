@@ -1,0 +1,180 @@
+{
+  "name": "FINRA Compliance Evaluation Agent",
+  "nodes": [
+    {
+      "parameters": {
+        "jsCode": "const response = $input.first().json;\nconst rawText = response.content[0].text;\nconst cleanedText = rawText.replace(/```json\\n?/g, '').replace(/```\\n?/g, '').trim();\nconst parsed = JSON.parse(cleanedText);\nreturn parsed.map(item => ({ json: item }));"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [448, -280],
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [0, -280],
+      "name": "Manual trigger"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.anthropic.com/v1/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-api-key",
+              "value": "YOUR_CLAUDE_API_KEY"
+            },
+            {
+              "name": "anthropic-version",
+              "value": "2023-06-01"
+            },
+            {
+              "name": "content-type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "body": "{\"model\":\"claude-opus-4-6\",\"max_tokens\":2000,\"messages\":[{\"role\":\"user\",\"content\":\"Generate exactly 9 realistic synthetic financial advisor statements. Return ONLY a valid JSON array with exactly 9 objects. Each object must have: id (1-9), risk_level (HIGH, MEDIUM, or LOW), and text (the financial statement). Generate 3 HIGH risk, 3 MEDIUM risk, and 3 LOW risk statements. HIGH risk examples should contain guaranteed returns, zero risk claims, or misleading performance data. MEDIUM risk should have vague performance implications or incomplete disclosures. LOW risk should be fully compliant with proper disclaimers. Return ONLY the JSON array, nothing else.\"}]}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [224, -280],
+      "name": "Generate Synthetic Data"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [672, -280],
+      "name": "Loop Over Texts"
+    },
+    {
+      "parameters": {
+        "amount": 3
+      },
+      "name": "Rate Limit Buffer",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [896, -352]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.anthropic.com/v1/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-api-key",
+              "value": "YOUR_CLAUDE_API_KEY"
+            },
+            {
+              "name": "anthropic-version",
+              "value": "2023-06-01"
+            },
+            {
+              "name": "content-type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "=json",
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ model: 'claude-opus-4-6', max_tokens: 1000, messages: [{ role: 'user', content: 'You are a FINRA compliance expert. You know FINRA Rules 2010, 2111 and 2210 thoroughly. Analyze this financial text and return ONLY a valid JSON object with no extra text: risk_level (HIGH or MEDIUM or LOW), violations_found (array of strings), flagged_phrases (array of strings), recommendation (string). Financial text: ' + $json.text }] }) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [1120, -352],
+      "name": "FINRA Compliance Check"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "YOUR_GOOGLE_SHEET_ID",
+          "mode": "list",
+          "cachedResultName": "AI Agents Outputs"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "FINRA Agent",
+          "mode": "list",
+          "cachedResultName": "FINRA Agent"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "ID": "={{ $json.ID }}",
+            "Risk Level": "={{ $json.Risk_Level }}",
+            "Input Text": "={{ $json.Input_Text }}",
+            "Detected Risk": "={{ $json.Detected_Risk }}",
+            "Match": "={{ $json.Match }}",
+            "Violations Found": "={{ $json.Violations_Found }}",
+            "Flagged Phrases": "={{ $json.Flagged_Phrases }}",
+            "Recommendation": "={{ $json.Recommendation }}"
+          }
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [1568, -280],
+      "name": "Save to Google Sheets"
+    },
+    {
+      "parameters": {
+        "jsCode": "const raw = items[0].json;\nconst text = raw.content[0].text;\nconst cleaned = text.replace(/```json\\n?/g, '').replace(/```\\n?/g, '').trim();\nconst parsed = JSON.parse(cleaned);\nconst inputItem = $('Loop Over Texts').item.json;\n\nreturn [{\n  json: {\n    ID: String(inputItem.id || \"\"),\n    Risk_Level: String(inputItem.risk_level || \"\"),\n    Input_Text: String(inputItem.text || \"\"),\n    Detected_Risk: String(parsed.risk_level || \"\"),\n    Match: inputItem.risk_level === parsed.risk_level ? \"CORRECT\" : \"MISMATCH\",\n    Violations_Found: Array.isArray(parsed.violations_found) ? parsed.violations_found.join(\", \") : \"\",\n    Flagged_Phrases: Array.isArray(parsed.flagged_phrases) ? parsed.flagged_phrases.join(\", \") : \"\",\n    Recommendation: String(parsed.recommendation || \"\")\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1344, -352],
+      "name": "Parse Compliance Results"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Code in JavaScript": {
+      "main": [[{"node": "Loop Over Texts", "type": "main", "index": 0}]]
+    },
+    "Manual trigger": {
+      "main": [[{"node": "Generate Synthetic Data", "type": "main", "index": 0}]]
+    },
+    "Generate Synthetic Data": {
+      "main": [[{"node": "Code in JavaScript", "type": "main", "index": 0}]]
+    },
+    "Loop Over Texts": {
+      "main": [[], [{"node": "Rate Limit Buffer", "type": "main", "index": 0}]]
+    },
+    "Rate Limit Buffer": {
+      "main": [[{"node": "FINRA Compliance Check", "type": "main", "index": 0}]]
+    },
+    "FINRA Compliance Check": {
+      "main": [[{"node": "Parse Compliance Results", "type": "main", "index": 0}]]
+    },
+    "Save to Google Sheets": {
+      "main": [[{"node": "Loop Over Texts", "type": "main", "index": 0}]]
+    },
+    "Parse Compliance Results": {
+      "main": [[{"node": "Save to Google Sheets", "type": "main", "index": 0}]]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "tags": []
+}
