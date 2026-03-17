@@ -34,9 +34,9 @@ performance on FINRA regulatory classification tasks.
 
 ## FINRA Rules Applied
 - Rule 2010 — Standards of Commercial Honor
+- Rule 2111 — Suitability  
+- Rule 2210 — Communications with the Public
 
 ## Import This Workflow
 Download [FINRA-Compliance-Evaluation-Agent.json](FINRA-Agent/FINRA-Compliance-Evaluation-Agent.json) 
 and import directly into n8n to use this workflow yourself.
-- Rule 2111 — Suitability  
-- Rule 2210 — Communications with the Public
