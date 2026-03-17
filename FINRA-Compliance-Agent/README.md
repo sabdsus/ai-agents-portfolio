@@ -17,7 +17,7 @@ performance on FINRA regulatory classification tasks.
 - 2 mismatches identified between MEDIUM and HIGH risk boundary
 
 ## Architecture Diagram
-![Architecture](FINRA_Compliance_Evaluation_System_Architecture.pdf)
+![FINRA Architecture](FINRA-Compliance-Agent-Architecture.png)
 
 ## Workflow Diagram
 ![Workflow](finra-workflow.png)
