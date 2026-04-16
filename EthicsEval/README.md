@@ -100,10 +100,7 @@ Overall bias score: **5/15 — Moderate bias detected**
 | File | Description |
 |---|---|
 | [EthicsEval.ipynb](./EthicsEval.ipynb) | Full Python notebook with all code |
-| [Risk_By_Proxy_Policy_Brief.pdf](./Risk_By_Proxy_Policy_Brief.pdf) | Accompanying policy brief |
 | [ethics_eval_sample_output.txt](./ethics_eval_sample_output.txt) | Sample bias evaluation report output |
-
----
 
 ## Policy Context
 
@@ -112,9 +109,12 @@ This project is the practical implementation of a two-pillar governance framewor
 1. **Training Data Governance** — audit what the model learned before deployment
 2. **Output Equity Testing** — test whether outputs are equitable across demographic groups
 
-**Policy brief:** [Risk by Proxy — Rouabhi, 2026](./Risk_By_Proxy_Policy_Brief.pdf)
+**Policy brief:** [Risk by Proxy — Rouabhi, 2026](https://zenodo.org/records/19601233?token=eyJhbGciOiJIUzUxMiJ9.eyJpZCI6IjFjOTNiOWQwLTk5ZDYtNGQ1OS05ZTZlLTM1NjI0YzBlYjdjMCIsImRhdGEiOnt9LCJyYW5kb20iOiIyMjcxZWU5MWM5MGJkYjVhZDRlNjdiNTM1NTU2NDM4ZCJ9.igH1zgGcvxsf5UQPEaTroKb5zkJ6HU3m-buaTheZ2Wu_oCkVDeXaTktxslAFpuUd84zsEZMRvQ0eL6FRFjXqKQ)
 
-*Full peer review submission pending on SSRN. Link to be updated.*
+*Also under review on SSRN.*
+
+---
+
 ## Current Status
 
 This is a working prototype built as part of a fellowship research project on AI governance in financial services. 
