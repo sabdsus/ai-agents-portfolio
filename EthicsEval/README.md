@@ -95,16 +95,13 @@ Overall bias score: **5/15 — Moderate bias detected**
 - Synthetic client data
 
 ---
+## Project Files
 
-## Current Status
-
-This is a working prototype built as part of a fellowship research project on AI governance in financial services. 
-
-Phase 2 will include:
-- Bulk testing across 20+ synthetic profiles
-- NLP sentiment analysis pipeline
-- Visual dashboard (Plotly/Streamlit)
-- Expanded bias categories
+| File | Description |
+|---|---|
+| [EthicsEval.ipynb](./EthicsEval.ipynb) | Full Python notebook with all code |
+| [Risk_By_Proxy_Policy_Brief.pdf](./Risk_By_Proxy_Policy_Brief.pdf) | Accompanying policy brief |
+| [ethics_eval_sample_output.txt](./ethics_eval_sample_output.txt) | Sample bias evaluation report output |
 
 ---
 
@@ -115,7 +112,19 @@ This project is the practical implementation of a two-pillar governance framewor
 1. **Training Data Governance** — audit what the model learned before deployment
 2. **Output Equity Testing** — test whether outputs are equitable across demographic groups
 
-**Policy brief available on SSRN:** [link to be added]
+**Policy brief:** [Risk by Proxy — Rouabhi, 2026](./Risk_By_Proxy_Policy_Brief.pdf)
+
+*Full peer review submission pending on SSRN. Link to be updated.*
+## Current Status
+
+This is a working prototype built as part of a fellowship research project on AI governance in financial services. 
+
+Phase 2 will include:
+- Bulk testing across 20+ synthetic profiles
+- NLP sentiment analysis pipeline
+- Visual dashboard (Plotly/Streamlit)
+- Expanded bias categories
+
 
 ---
 
