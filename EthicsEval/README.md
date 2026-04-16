@@ -99,7 +99,8 @@ Overall bias score: **5/15 — Moderate bias detected**
 
 | File | Description |
 |---|---|
-| [EthicsEval.ipynb](./EthicsEval.ipynb) | Full Python notebook with all code |
+| [ethicseval_code.py](./ethicseval_code.py) | Full Python code — readable directly on GitHub |
+| [EthicsEval.ipynb](./EthicsEval.ipynb) | Jupyter notebook — downloadable and runnable in Google Colab |
 | [ethics_eval_sample_output.txt](./ethics_eval_sample_output.txt) | Sample bias evaluation report output |
 
 ## Policy Context
